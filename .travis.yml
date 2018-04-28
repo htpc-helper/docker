@@ -17,6 +17,6 @@ jobs:
       script:
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - cd baseimage
-      - docker build -t $DOCKER_USERNAME/baseimage:$ARCH -f ./Dockerfile_$ARCH . ;
+      - docker build -t $DOCKER_USERNAME/baseimage -f ./Dockerfile_$ARCH . ;
       - docker images
       - docker push $DOCKER_USERNAME/baseimage:$ARCH
