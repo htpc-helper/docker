@@ -1,0 +1,23 @@
+dist: trusty
+sudo: required
+
+services:
+  - docker
+
+language: generic
+
+matrix:
+  include:
+    - env: TARGET=armv7-unknown-linux-gnueabihf ARCH=arm32v7
+    - env: TARGET=x86_64-unknown-linux-gnu ARCH=x86_64
+
+jobs:
+  include:
+    - stage: build docker image
+      script:
+      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      - cd baseimage
+      - docker build -t baseimage:$ARCH -f ./Dockerfile_$ARCH . ;
+      - docker images
+      - docker tag baseimage:$ARCH $DOCKER_USERNAME/baseimage:$ARCH
+      - docker push $DOCKER_USERNAME/baseimage:$ARCH
