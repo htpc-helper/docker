@@ -6,6 +6,10 @@ services:
 
 language: generic
 
+env:
+- ARCH=arm32v7
+- ARCH=x86_64
+
 matrix:
   include:
     - env: TARGET=armv7-unknown-linux-gnueabihf ARCH=arm32v7
