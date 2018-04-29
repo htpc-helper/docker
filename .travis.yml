@@ -7,8 +7,14 @@ services:
 language: generic
 
 env:
-# - ARCH=x86_64
-- ARCH=armv7
+# - IMAGE=alpine-baseimage ARCH=x86_64
+- IMAGE=alpine-baseimage ARCH=armv7
+# - IMAGE=alpine-privoxy ARCH=x86_64
+- IMAGE=alpine-privoxy ARCH=armv7
+# - IMAGE=alpine-qbittorrent ARCH=x86_64
+- IMAGE=alpine-qbittorrent ARCH=armv7
+# - IMAGE=ubuntu-baseimage ARCH=x86_64
 
 script:
-  - echo $ARCH
+  - cd $IMAGE
+  - ./build.sh
