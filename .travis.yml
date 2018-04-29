@@ -8,20 +8,17 @@ language: generic
 
 env:
 - ARCH=x86_64 TARGET=x86_64-unknown-linux-gnu
-- ARCH=arm32v7 TARGET=armv7-unknown-linux-gnueabihf
+- ARCH=armv7 TARGET=armv7-unknown-linux-gnueabihf
 
 # matrix:
-#   include:
-#     - env: TARGET=x86_64-unknown-linux-gnu ARCH=x86_64
-    # - env: TARGET=armv7-unknown-linux-gnueabihf ARCH=arm32v7
+  # include:
+  #   - env: TARGET=x86_64-unknown-linux-gnu ARCH=x86_64
+  #   - env: TARGET=armv7-unknown-linux-gnueabihf ARCH=armv7
 
-jobs:
-  include:
-    - stage: build docker image
-      script:
-      - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-      - cd baseimage
-      - docker build -t $DOCKER_USERNAME/baseimage -f ./Dockerfile_$ARCH . ;
-      - docker images
-      - docker tag $DOCKER_USERNAME/baseimage $DOCKER_USERNAME/baseimage:$ARCH
-      - docker push $DOCKER_USERNAME/baseimage:$ARCH
+script:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - cd baseimage
+  - docker build -t $DOCKER_USERNAME/baseimage -f ./Dockerfile_$ARCH . ;
+  - docker images
+  - docker tag $DOCKER_USERNAME/baseimage $DOCKER_USERNAME/baseimage:$ARCH
+  - docker push $DOCKER_USERNAME/baseimage:$ARCH
