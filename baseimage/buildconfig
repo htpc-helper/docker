@@ -3,7 +3,7 @@ export DEBIAN_FRONTEND=noninteractive
 export TERM=xterm
 export LANG=en_AU.UTF-8
 export LANGUAGE=en_AU
-minimal_apt_get_install='apt-get install -qy --no-install-recommends'
+minimal_apt_get_install='apt-get install -qq -y --no-install-recommends'
 
 # Default services
 # Set 1 to the service you want to disable
