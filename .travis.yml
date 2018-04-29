@@ -12,13 +12,18 @@ env:
 
 script:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - cd baseimage
+  - cd alpine-baseimage
+  # Install build deps
   - if [ $ARCH == "armv7" ] ;
-      then curl -L -o qemu-arm-static.tar.gz https://github.com/multiarch/qemu-user-static/releases/download/v2.6.0/qemu-arm-static.tar.gz &&
-      tar xzf qemu-arm-static.tar.gz &&
+      then curl -L -o qemu-arm-static.tar.gz https://github.com/multiarch/qemu-user-static/releases/download/v2.6.0/qemu-arm-static.tar.gz;
+      tar xzf qemu-arm-static.tar.gz;
       docker run --rm --privileged multiarch/qemu-user-static:register --reset;
+      chmod +x build/*;
+      build/minirootfs-download.sh;
     fi;
-  - docker build -t $DOCKER_USERNAME/baseimage -f ./Dockerfile_$ARCH . ;
+  # Build image
+  - docker build -t $DOCKER_USERNAME/alpine-baseimage -f ./Dockerfile_$ARCH . ;
+  # Tag image and upload to Dockerhub
   - docker images
-  - docker tag $DOCKER_USERNAME/baseimage $DOCKER_USERNAME/baseimage:$ARCH
-  - docker push $DOCKER_USERNAME/baseimage:$ARCH
+  - docker tag $DOCKER_USERNAME/alpine-baseimage $DOCKER_USERNAME/alpine-baseimage:$ARCH
+  - docker push $DOCKER_USERNAME/alpine-baseimage:$ARCH
