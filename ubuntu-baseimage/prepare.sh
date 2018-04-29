@@ -14,7 +14,7 @@ echo -n no > /etc/container_environment/INITRD
 sed -i 's/^#\s*\(deb.*main restricted\)$/\1/g' /etc/apt/sources.list
 sed -i 's/^#\s*\(deb.*universe\)$/\1/g' /etc/apt/sources.list
 sed -i 's/^#\s*\(deb.*multiverse\)$/\1/g' /etc/apt/sources.list
-apt-get -qq update
+apt-get update
 
 ## Fix some issues with APT packages.
 ## See https://github.com/dotcloud/docker/issues/1024
@@ -38,7 +38,7 @@ $minimal_apt_get_install apt-transport-https ca-certificates
 $minimal_apt_get_install software-properties-common
 
 ## Upgrade all packages.
-apt-get -qq dist-upgrade -y --no-install-recommends -o Dpkg::Options::="--force-confold"
+apt-get dist-upgrade -y --no-install-recommends -o Dpkg::Options::="--force-confold"
 
 ## Fix locale.
 $minimal_apt_get_install language-pack-en
