@@ -1,11 +1,8 @@
 export LC_ALL=C
 export DEBIAN_FRONTEND=noninteractive
-export USER=htpc-helper
-export UID=1000
 export TERM=xterm
 export LANG=en_AU.UTF-8
-export LANGUAGE=en_AU:en
-export LC_ALL=en_AU.UTF-8
+export LANGUAGE=en_AU
 minimal_apt_get_install='apt-get install -qy --no-install-recommends'
 
 # Default services

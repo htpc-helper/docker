@@ -9,6 +9,9 @@ RUN /bd_build/prepare.sh && \
 	/bd_build/utilities.sh && \
 	/bd_build/cleanup.sh
 
+ENV UID=1000 \
+    USER=htpc-helper
+
 # Add USER
 RUN useradd --no-create-home --uid $UID $USER
 
