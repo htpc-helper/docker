@@ -15,6 +15,7 @@ jobs:
   include:
     - stage: build docker image
       script:
+      - echo $ARCH
       - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       - cd baseimage
       - docker build -t $DOCKER_USERNAME/baseimage -f ./Dockerfile_$ARCH . ;
