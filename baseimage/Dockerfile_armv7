@@ -2,6 +2,10 @@ FROM arm32v7/ubuntu:16.04
 
 COPY qemu-arm-static /usr/bin/qemu-arm-static
 
+ENV DISABLE_SYSLOG=1 \
+    DISABLE_SSH=1 \
+    DISABLE_CRON=1
+
 COPY . /bd_build
 
 RUN /bd_build/prepare.sh && \
