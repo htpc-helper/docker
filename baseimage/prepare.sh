@@ -42,7 +42,7 @@ apt-get -qq dist-upgrade -y --no-install-recommends -o Dpkg::Options::="--force-
 
 ## Fix locale.
 $minimal_apt_get_install language-pack-en
-locale-gen $LANGUAGE
+locale-gen $LANG
 update-locale LANG=$LANG LC_CTYPE=$LANG
 echo -n $LANG > /etc/container_environment/LANG
 echo -n $LANG > /etc/container_environment/LC_CTYPE
