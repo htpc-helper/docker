@@ -1,4 +1,4 @@
-FROM htcphelper/alpine-baseimage:armv7
+FROM htpchelper/alpine-baseimage:armv7
 LABEL maintainer="htpc=helper"
 
 # package versions
