@@ -2,20 +2,21 @@
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 # Install build deps
-if [ $ARCH == "armv7" ]; then
+if [ "$ARCH" == "armv7" ]; then
   docker run --rm --privileged multiarch/qemu-user-static:register --reset
   curl -L -o qemu-arm-static.tar.gz https://github.com/multiarch/qemu-user-static/releases/download/v2.6.0/qemu-arm-static.tar.gz
   tar xzf qemu-arm-static.tar.gz
   # Configure image to download
   alpineUrl="http://dl-cdn.alpinelinux.org/alpine/latest-stable/releases/armhf/"
   rootfsfile="alpine-minirootfs-3.7.0-armhf.tar.gz"
-elif [ $ARCH == "x86_64" ]; then
+elif [ "$ARCH" == "x86_64" ]; then
   # Configure image to download
   alpineUrl="http://dl-cdn.alpinelinux.org/alpine/latest-stable/releases/x86_64/"
   rootfsfile="alpine-minirootfs-3.7.0-x86_64.tar.gz"
 fi
 
 # Download OS files
+signaturefile="$rootfsfile.sha512"
 wget $alpineUrl$rootfsfile
 wget $alpineUrl$signaturefile
 
