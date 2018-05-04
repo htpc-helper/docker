@@ -1,0 +1,22 @@
+FROM ubuntu:16.04
+
+COPY . /bd_build
+
+RUN /bd_build/prepare.sh && \
+	/bd_build/system_services.sh && \
+	/bd_build/utilities.sh && \
+	/bd_build/cleanup.sh
+
+# Set environmental settings
+ENV DEBIAN_FRONTEND="teletype" \
+    USER=htpc-helper \
+    UID=1000 \
+    TERM=xterm \
+    LANG="en_AU.UTF-8" \
+    LANGUAGE="en_AU:en" \
+    LC_ALL="en_AU.UTF-8"
+
+# Add USER
+RUN useradd --no-create-home --uid $UID $USER
+
+CMD ["/sbin/my_init"]
