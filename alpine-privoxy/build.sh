@@ -3,7 +3,7 @@
 # Login to Docker
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 # Install build deps
-if [ $ARCH == "armv7" ]; then
+if [ $ARCH == "armhf" ]; then
   docker run --rm --privileged multiarch/qemu-user-static:register --reset
 fi;
 # Build image
