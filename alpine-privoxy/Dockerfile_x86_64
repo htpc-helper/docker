@@ -1,4 +1,4 @@
-FROM htpchelper/alpine-baseimage:armv7
+FROM lsiobase/alpine
 
 # environment settings
 ENV HOME="/config" \
