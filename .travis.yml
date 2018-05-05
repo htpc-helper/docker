@@ -7,9 +7,10 @@ services:
 language: generic
 
 env:
-- IMAGE=alpine-baseimage ARCH=armv7
-- IMAGE=alpine-privoxy ARCH=x86_64
-- IMAGE=alpine-privoxy ARCH=armv7
+# - IMAGE=alpine-baseimage ARCH=armv7
+# - IMAGE=alpine-privoxy ARCH=x86_64
+# - IMAGE=alpine-privoxy ARCH=armv7
+ - IMAGE=ubuntu-tvheadend ARCH=x86_64
 
 script:
   - cd $IMAGE

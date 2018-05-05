@@ -1,0 +1,144 @@
+FROM lsiobase/ubuntu:xenial
+
+# Update and upgrade
+RUN apt update -q && \
+    apt upgrade -qy
+
+# Install runtime packages
+RUN apt install -qy \
+    python \
+    libav-tools \
+	libxml2 \
+	libxslt1.1
+
+ARG HOME="/config"
+
+# Copy patches
+ADD patches/ /tmp/patches/
+
+# Install build packages
+RUN apt install -qy \
+    build-essential \
+    autoconf \
+    libtool \
+    git \
+    pkg-config \
+    libssl-dev \
+    bzip2 \
+    libavahi-client-dev \
+    zlib1g-dev \
+    libavcodec-dev \
+    libavutil-dev \
+    libavformat-dev \
+    libswscale-dev \
+    libavresample-dev
+
+# Add runtime dependencies required in build stage
+RUN apt install -qy \
+	openssl \
+    gzip \
+	perl \
+	tar \
+	liburiparser1 \
+	zlibc \
+    gettext \
+    dvb-apps
+
+# Build Libiconv
+RUN mkdir -p /tmp/iconv-src && \
+    curl -o /tmp/iconv.tar.gz -L ftp://www.mirrorservice.org/sites/ftp.gnu.org/gnu/libiconv/libiconv-1.14.tar.gz && \
+    tar xf /tmp/iconv.tar.gz -C /tmp/iconv-src --strip-components=1 && \
+    cd /tmp/iconv-src && \
+    ./configure --prefix=/usr/local && \
+    patch -p1 -i /tmp/patches/libiconv-1-fixes.patch && \
+    make && \
+    make install
+
+# Build Tvheadend
+RUN mkdir -p /tmp/tvheadend-src && \
+   git clone https://github.com/tvheadend/tvheadend.git /tmp/tvheadend-src && \
+    cd /tmp/tvheadend-src && \
+    ./configure \
+      --disable-satip_server \
+      --disable-satip_client \
+      --disable-hdhomerun_static \
+      --disable-trace \
+      --disable-imagecache \
+      --disable-avahi \
+      --disable-libav  \
+      --disable-ffmpeg_static \
+      --disable-libx264 \
+      --disable-libx264_static \
+      --disable-libx265 \
+      --disable-libx265_static \
+      --disable-libvpx \
+      --disable-libvpx_static \
+      --disable-libtheora \
+      --disable-libtheora_static \
+      --disable-libvorbis \
+      --disable-libvorbis_static \
+      --disable-libfdkaac \
+      --disable-libfdkaac_static \
+      --disable-nvenc \
+      --disable-libmfx_static \
+      --disable-inotify \
+      --disable-epoll \
+      --disable-ccache \
+      --disable-tvhcsa \
+      --disable-dvbcsa \
+      --disable-dvben50221 \
+      --disable-dbus_1 \
+      --disable-libsystemd_daemon \
+      --disable-bintray_cache \
+      --infodir=/usr/share/info \
+      --localstatedir=/var \
+      --mandir=/usr/share/man \
+      --prefix=/usr \
+      --sysconfdir=/config && \
+    make && \
+    make install
+
+# Build Argtable2
+RUN mkdir -p /tmp/argtable-src && \
+    curl -o /tmp/argtable.tar.gz -L https://downloads.sourceforge.net/project/argtable/argtable/argtable-2.13/argtable2-13.tar.gz && \
+    tar xf /tmp/argtable.tar.gz -C /tmp/argtable-src --strip-components=1 && \
+    cd /tmp/argtable-src && \
+    ./configure \
+      --prefix=/usr && \
+    make && \
+    make check && \
+    make install
+
+# Build Comskip
+RUN mkdir -p /tmp/comskip-src && \
+    curl -o /tmp/comskip.tar.gz -L https://github.com/erikkaashoek/Comskip/archive/v0.82.003.tar.gz && \
+    tar xf /tmp/comskip.tar.gz -C /tmp/comskip-src --strip-components=1 && \
+    cd /tmp/comskip-src && \
+    ./autogen.sh && \
+    ./configure \
+      --bindir=/usr/bin \
+      --sysconfdir=/config/comskip && \
+    make && \
+    make install
+
+# Clean up
+RUN apt purge --auto-remove -y \
+    build-essential \
+    autoconf \
+    libtool \
+    git \
+    pkg-config \
+    libssl-dev \
+    bzip2 \
+    libavahi-client-dev \
+    zlib1g-dev \
+    libavcodec-dev \
+    libavutil-dev \
+    libavformat-dev \
+    libswscale-dev \
+    libavresample-dev
+
+RUN apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /tmp/* /var/tmp/*
+
