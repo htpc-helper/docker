@@ -138,7 +138,14 @@ RUN apt purge --auto-remove -y \
     libswscale-dev \
     libavresample-dev
 
-RUN apt-get autoremove -y && \
+RUN echo "**** cleanup ****" && \
+    apt-get autoremove -y && \
     apt-get clean && \
     rm -rf /tmp/* /var/tmp/*
 
+# add local files
+COPY root/ /
+
+# ports and volumes
+EXPOSE 9981 9982
+VOLUME /config /recordings
