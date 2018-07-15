@@ -56,7 +56,8 @@ RUN mkdir -p /tmp/iconv-src && \
 
 # Build Tvheadend
 RUN mkdir -p /tmp/tvheadend-src && \
-   git clone https://github.com/tvheadend/tvheadend.git /tmp/tvheadend-src && \
+   curl -o /tmp/tvheadend.tar.gz -L https://github.com/tvheadend/tvheadend/archive/v4.2.6.tar.gz && \
+   tar xf /tmp/iconv.tar.gz -C /tmp/tvheadend-src --strip-components=1 && \
     cd /tmp/tvheadend-src && \
     ./configure \
       --disable-satip_server \
