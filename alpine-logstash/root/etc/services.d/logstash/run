@@ -1,0 +1,13 @@
+#!/usr/bin/with-contenv bash
+
+UMASK_SET=${UMASK_SET:-022}
+
+umask "$UMASK_SET"
+
+exec \
+	s6-setuidgid abc /opt/logstash/bin/logstash \
+		--path.settings /config \
+		--path.config /config/conf.d/ \
+		--path.logs /config/logs \
+		--http.port $HTTP_PORT \
+		--http.host $HTTP_HOST

@@ -1,0 +1,87 @@
+FROM lsiobase/alpine
+
+# TODO
+# [ ] checksums
+#     https://artifacts.elastic.co/downloads/logstash/logstash-6.3.1.tar.gz.sha512
+
+# environment settings
+ENV HOME="/config" \
+    XDG_CONFIG_HOME="/config" \
+    XDG_DATA_HOME="/config"
+
+ARG MANTICORE_VER="0.6.4"
+ARG LOGSTASH_VER="6.3.1" 
+ARG LOGSTASH_API_VER="2.1.28" 
+
+RUN echo "**** install dependencies ****" && \
+    apk update && apk upgrade && \
+    apk add --no-cache \
+	    openjdk8-jre \
+        curl \
+        ruby \
+        jruby && \
+    apk add --virtual build_deps \
+        build-base \
+        ruby-dev \
+        libc-dev \
+        linux-headers \
+        libressl-dev \
+        postgresql-dev \
+        libxml2-dev \
+        libxslt-dev && \
+    echo 'gem: --no-document' > /etc/gemrc
+
+RUN echo "**** install runtime packages ****" && \
+    mkdir -p /opt/logstash && \
+    curl -o /tmp/logstash.tar.gz -L https://artifacts.elastic.co/downloads/logstash/logstash-6.3.1.tar.gz && \
+    tar xf /tmp/logstash.tar.gz -C /opt/logstash --strip-components=1 && \
+    rm /tmp/logstash.tar.gz
+
+# 
+
+RUN echo "**** install ruby gems ****" && \
+    gem install \
+        chronic_duration \
+        clamp \
+        concurrent-ruby \
+        elasticsearch \
+        filesize \
+        gems \
+        i18n \
+        jrjackson \
+        jruby-openssl \
+        minitar \
+        pry \
+        puma \
+        rack \
+        rubyzip \
+        sinatra \
+        stud \
+        thread_safe \
+        treetop \
+        mqtt \
+        influxdb && \
+    curl -o /tmp/manticore-java.gem -L https://rubygems.org/downloads/manticore-${MANTICORE_VER}-java.gem && \
+    gem install /tmp/manticore-java.gem && \
+    curl -o /tmp/logstash-core-java.gem -L https://rubygems.org/downloads/logstash-core-${LOGSTASH_VER}-java.gem && \
+    gem install /tmp/logstash-core-java.gem --ignore-dependencies && \
+    curl -o /tmp/logstash-core-java-plugin-api.gem -L https://rubygems.org/downloads/logstash-core-plugin-api-${LOGSTASH_API_VER}-java.gem && \
+    gem install /tmp/logstash-core-java-plugin-api.gem --ignore-dependencies && \
+    gem install logstash-filter-cipher --ignore-dependencies && \
+    rm -rf /tmp/* && \
+    apk del build_deps
+
+RUN echo "**** install logstash plugins ****" && \
+    cd /opt/logstash && \
+    bin/logstash-plugin install logstash-input-http_poller && \
+    bin/logstash-plugin install logstash-input-beats && \
+    bin/logstash-plugin install logstash-filter-cipher && \
+    bin/logstash-plugin install logstash-filter-json && \
+    bin/logstash-plugin install logstash-output-influxdb && \
+    bin/logstash-plugin install logstash-output-mqtt
+
+# add local files
+COPY root/ /
+
+# ports and volumes
+VOLUME /config
