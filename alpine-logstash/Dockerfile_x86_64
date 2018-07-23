@@ -4,7 +4,6 @@ FROM lsiobase/alpine
 # [ ] checksums
 #     https://artifacts.elastic.co/downloads/logstash/logstash-6.3.1.tar.gz.sha512
 
-# environment settings
 ENV HOME="/config" \
     XDG_CONFIG_HOME="/config" \
     XDG_DATA_HOME="/config"
@@ -37,8 +36,6 @@ RUN echo "**** install runtime packages ****" && \
     tar xf /tmp/logstash.tar.gz -C /opt/logstash --strip-components=1 && \
     rm /tmp/logstash.tar.gz
 
-# 
-
 RUN echo "**** install ruby gems ****" && \
     gem install \
         chronic_duration \
@@ -67,9 +64,7 @@ RUN echo "**** install ruby gems ****" && \
     gem install /tmp/logstash-core-java.gem --ignore-dependencies && \
     curl -o /tmp/logstash-core-java-plugin-api.gem -L https://rubygems.org/downloads/logstash-core-plugin-api-${LOGSTASH_API_VER}-java.gem && \
     gem install /tmp/logstash-core-java-plugin-api.gem --ignore-dependencies && \
-    gem install logstash-filter-cipher --ignore-dependencies && \
-    rm -rf /tmp/* && \
-    apk del build_deps
+    gem install logstash-filter-cipher --ignore-dependencies
 
 RUN echo "**** install logstash plugins ****" && \
     cd /opt/logstash && \
@@ -80,8 +75,11 @@ RUN echo "**** install logstash plugins ****" && \
     bin/logstash-plugin install logstash-output-influxdb && \
     bin/logstash-plugin install logstash-output-mqtt
 
-# add local files
+RUN echo "**** clean up ****" && \
+    apk del build_deps && \
+    rm -rf /tmp/* && \
+    rm -rf /var/cache/apk/*
+
 COPY root/ /
 
-# ports and volumes
 VOLUME /config
