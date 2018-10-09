@@ -1,0 +1,26 @@
+FROM lsiobase/alpine
+
+# environment settings
+ENV HOME="/config" \
+    XDG_CONFIG_HOME="/config" \
+    XDG_DATA_HOME="/config" \
+    FLOWS=flows.json \
+    NODE_PATH=/usr/src/node-red/node_modules:/config/node_modules
+
+RUN echo "**** install runtime packages ****" && \
+    apk add --no-cache \
+	    nodejs
+
+RUN echo "**** cleanup ****" && \
+    rm -rf \
+	    /tmp/*
+
+# add local files
+COPY root/ /
+
+RUN echo "**** install node packages ****" && \
+    npm install --prefix /usr/src/node-red
+
+# ports and volumes
+EXPOSE 1880
+VOLUME /config
