@@ -10,15 +10,16 @@ ENV HOME="/config" \
 RUN echo "**** install runtime packages ****" && \
     apk update && \
     apk add --no-cache \
-	    nodejs 
+	    nodejs \
+        libsodium
 
-RUN echo "**** install build packages ****" && \
-    apk add --no-cache --virtual build-dependencies \
-        build-base \
-        gcc \
-        wget \
-        git \
-        make
+# RUN echo "**** install build packages ****" && \
+#     apk add --no-cache --virtual build-dependencies \
+#         build-base \
+#         gcc \
+#         wget \
+#         git \
+#         make
 
 # add local files
 COPY root/ /
@@ -26,8 +27,8 @@ COPY root/ /
 RUN echo "**** install node packages ****" && \
     npm install --prefix /usr/src/node-red
 
-RUN echo "**** remove build dependencies ****" && \
-    apk del build-dependencies
+# RUN echo "**** remove build dependencies ****" && \
+#     apk del build-dependencies
 
 RUN echo "**** cleanup ****" && \
     rm -rf \
