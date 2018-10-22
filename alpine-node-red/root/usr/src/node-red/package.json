@@ -16,7 +16,8 @@
       "node-red-node-random": "*",
       "node-red-contrib-influxdb": "*",
       "node-red-contrib-home-assistant": "*",
-      "node-red-contrib-apple-tv": "*"
+      "node-red-contrib-apple-tv": "*",
+      "node-red-contrib-alexa-home-skill": "*"
   },
   "engines": {
       "node": "8.*.*"
