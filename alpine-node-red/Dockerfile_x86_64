@@ -17,7 +17,8 @@ RUN echo "**** install build packages ****" && \
         build-base \
         gcc \
         wget \
-        git
+        git \
+        make
 
 # add local files
 COPY root/ /
