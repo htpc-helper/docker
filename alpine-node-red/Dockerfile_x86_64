@@ -10,17 +10,15 @@ ENV HOME="/config" \
 RUN echo "**** install runtime packages ****" && \
     apk update && \
     apk add --no-cache \
-	    nodejs \
-        libsodium
+	    nodejs
 
 RUN echo "**** install build packages ****" && \
     apk add --no-cache --virtual build-dependencies \
-        git
-        # build-base \
-        # gcc \
-        # wget \
-        # git \
-        # make
+        build-base \
+        gcc \
+        wget \
+        git \
+        make
 
 # add local files
 COPY root/ /
