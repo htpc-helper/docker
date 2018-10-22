@@ -9,17 +9,21 @@ ENV HOME="/config" \
 
 RUN echo "**** install runtime packages ****" && \
     apk add --no-cache \
-	    nodejs
+	    nodejs \
+        git
 
-RUN echo "**** cleanup ****" && \
-    rm -rf \
-	    /tmp/*
+
 
 # add local files
 COPY root/ /
 
 RUN echo "**** install node packages ****" && \
     npm install --prefix /usr/src/node-red
+
+RUN echo "**** cleanup ****" && \
+    apk del git && \
+    rm -rf \
+	    /tmp/*
 
 # ports and volumes
 EXPOSE 1880
