@@ -10,7 +10,11 @@ ENV HOME="/config" \
 RUN echo "**** install runtime packages ****" && \
     apk update && \
     apk add --no-cache \
-	    nodejs
+	    dbus \
+        nodejs \
+        avahi \
+        avahi-compat-libdns_sd \
+        avahi-dev
 
 RUN echo "**** install build packages ****" && \
     apk add --no-cache --virtual build-dependencies \
@@ -18,7 +22,10 @@ RUN echo "**** install build packages ****" && \
         gcc \
         wget \
         git \
-        make
+        make \
+        libtool \
+        autoconf \
+        automake
 
 # add local files
 COPY root/ /

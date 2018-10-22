@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+
+UMASK_SET=${UMASK_SET:-022}
+
+umask "$UMASK_SET"
+
+/usr/sbin/avahi-daemon -f /config/avahi.conf
