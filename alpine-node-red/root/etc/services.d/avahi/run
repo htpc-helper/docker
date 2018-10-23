@@ -5,4 +5,4 @@ sleep 1s
 done
 
 echo "Starting Avahi daemon"
-exec avahi-daemon --no-chroot
+exec /usr/sbin/avahi-daemon -f /config/avahi.conf --no-chroot 
