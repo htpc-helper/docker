@@ -1,0 +1,8 @@
+FROM oznu/guacamole
+
+# change port to 8078
+RUN sed -i -e 's/8080/8078/g' /usr/local/tomcat/conf/server.xml
+
+# ports and volumes
+EXPOSE 8078
+
