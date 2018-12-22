@@ -9,13 +9,14 @@
       "start": "node $NODE_OPTIONS node_modules/node-red/red.js -v $FLOWS"
   },
   "dependencies": {
-      "node-red": "0.19.4",
+      "node-red": "*",
       "node-red-node-msgpack": "*",
       "node-red-node-base64": "*",
       "node-red-node-suncalc": "*",
       "node-red-node-random": "*",
       "node-red-contrib-influxdb": "*",
       "node-red-contrib-home-assistant": "*",
+      "node-red-contrib-home-assistant-websocket": "*",
       "node-red-contrib-apple-tv": "*",
       "node-red-contrib-alexa-home-skill": "*"
   },
