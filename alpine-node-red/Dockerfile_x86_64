@@ -10,8 +10,9 @@ ENV HOME="/config" \
 RUN echo "**** install runtime packages ****" && \
     apk update && \
     apk add --no-cache \
-	    dbus \
+	dbus \
         nodejs \
+        npm \
         avahi \
         avahi-compat-libdns_sd \
         avahi-dev
