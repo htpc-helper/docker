@@ -12,8 +12,8 @@ env:
 # - IMAGE=alpine-privoxy ARCH=armv7
 # - IMAGE=ubuntu-tvheadend ARCH=x86_64
 # - IMAGE=alpine-logstash ARCH=x86_64
-# - IMAGE=alpine-node-red ARCH=x86_64
-  - IMAGE=debian-guacamole ARCH=x86_64
+  - IMAGE=alpine-node-red ARCH=x86_64
+# - IMAGE=debian-guacamole ARCH=x86_64
 
 script:
   - cd $IMAGE

@@ -14,11 +14,9 @@
       "node-red-node-base64": "*",
       "node-red-node-suncalc": "*",
       "node-red-node-random": "*",
-      "node-red-contrib-influxdb": "*",
-      "node-red-contrib-home-assistant": "*",
-      "node-red-contrib-home-assistant-websocket": "*",
       "node-red-contrib-apple-tv": "*",
-      "node-red-contrib-alexa-home-skill": "*"
+      "node-red-contrib-aws-iot-hub": "*",
+      "node-red-contrib-homekit-bridged": "*"
   },
   "engines": {
       "node": "8.*.*"
